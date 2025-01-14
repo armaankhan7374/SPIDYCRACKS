@@ -1,0 +1,24 @@
+pipelines:
+  default:
+    - step:
+        name: "Clone Repository and Setup Bot"
+        image: python:3.9  # Ubuntu-based Python image
+        caches:
+          - pip
+        script:
+          - apt-get update && apt-get install -y --no-install-recommends \
+            gcc libffi-dev libssl-dev \
+            && apt-get clean
+          - git clone <GitHub_Repo_Link>  # GitHub repository ko clone karega
+          - cd <Your_Repo_Name>  # Yahaan apne repository ka naam likhein
+          - pip install --no-cache-dir -r requirements.txt  # Agar `requirements.txt` file ho
+          - chmod +x *  # Sabhi files ko executable banayega
+          - chmod +x spidy  # Specific binary file ko executable banayega
+          - python3 spidy.py  # Main script ko run karega
+        services:
+          - docker
+
+definitions:
+  services:
+    docker:
+      memory: 512
